@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import "./scroll.css";
 
 export default function ScrollIndicator({ url }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const 
+  const [scrollPercentage, setScrollPercentage] = useState(0);
 
   async function fetchData(getUrl) {
     try {
@@ -22,7 +23,26 @@ export default function ScrollIndicator({ url }) {
       setLoading(false);
     }
   }
-
+  function handleScrollPercentage() {
+    console.log(
+      document.body.scrollTop,
+      document.documentElement.scrollTop,
+      document.documentElement.scrollHeight,
+      document.documentElement.clientHeight
+    );
+    const howMuchScrolled =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    setScrollPercentage((howMuchScrolled / height) * 100);
+  }
+  useEffect(() => {
+    window.addEventListener("scroll", handleScrollPercentage);
+    return () => {
+      window.removeEventListener("scroll", () => {});
+    };
+  });
   useEffect(() => {
     if (url) {
       fetchData(url);
@@ -33,6 +53,14 @@ export default function ScrollIndicator({ url }) {
     <div>
       {loading && <p>Loading...</p>}
       {errorMessage && <p>{errorMessage}</p>}
+      <div className="top-container">
+        <div className="scroll-progress">
+          <div
+            className="current-progress"
+            style={{ width: `${scrollPercentage}%` }}
+          ></div>
+        </div>
+      </div>
       <ul>
         {data.map((item) => (
           <li key={item.id}>
