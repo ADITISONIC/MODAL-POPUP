@@ -1,4 +1,5 @@
 import './App.css';
+import ModalTest from './Components/custom-model/model-test';
 
 
 
@@ -6,7 +7,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-    
+    <ModalTest/>
     </div>
   );
 }
