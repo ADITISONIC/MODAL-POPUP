@@ -1,9 +1,14 @@
-export default function Modal({ id, header, body, footer }) {
+import "./modal.css";
+
+export default function Modal({ id, header, body, footer, onclose }) {
   return (
     <div id={id || "Modal"} className="modal">
       <div className="content">
         <div className="header">
-          <span className="close-modal-icon">&times;</span>
+          {/* Use onClick instead of onclose */}
+          <span onClick={onclose} className="close-modal-icon">
+            &times;
+          </span>
           <h3>{header ? header : "Header"}</h3>
         </div>
         <div className="body">
